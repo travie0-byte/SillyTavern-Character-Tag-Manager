@@ -182,13 +182,33 @@ export function createEditSectionForCharacter(char) {
                 .filter(t => t.length > 0);
         }
 
-        const result = await fetch('/api/characters/merge-attributes', {
+        // const result = await fetch('/api/characters/merge-attributes', {
+        //     method: 'POST',
+        //     headers: getRequestHeaders(),
+        //     body: JSON.stringify({
+        //         avatar: char.avatar,
+        //         ...payload
+        //     })
+        // });
+
+        const formData = new FormData();
+        for (const [key, value] of Object.entries(payload)) {
+            if (typeof value === 'object' && value !== null) {
+                formData.append(key, JSON.stringify(value));
+            } else if (key === 'name') {
+                formData.append('ch_name', value.trim());
+            } else {
+                formData.append(key, value);
+            }
+        }
+
+        formData.append('avatar', char.avatar);
+
+        const fetchResult = await fetch('/api/characters/edit', {
             method: 'POST',
-            headers: getRequestHeaders(),
-            body: JSON.stringify({
-                avatar: char.avatar,
-                ...payload
-            })
+            headers: getRequestHeaders({ omitContentType: true }),
+            body: formData,
+            cache: 'no-cache',
         });
 
         if (result.ok) {
