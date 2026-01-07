@@ -45,7 +45,8 @@ import {
     characters,
     getCharacters,
     printCharactersDebounced,
-    saveSettingsDebounced
+    saveSettingsDebounced,
+    getRequestHeaders,
 } from "../../../../script.js";
 
 import { groups, getGroupAvatar } from '../../../../scripts/group-chats.js';
@@ -546,14 +547,9 @@ refreshFoldersTree();
             if (entity.avatar) {
                 // Character: delete via API
                 try {
-                    const csrf = await fetch('/csrf-token');
-                    const { token } = await csrf.json();
                     const result = await fetch('/api/characters/delete', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-Token': token
-                        },
+                        headers: getRequestHeaders(),
                         body: JSON.stringify({
                             avatar_url: entity.avatar,
                             delete_chats: true
@@ -578,14 +574,9 @@ refreshFoldersTree();
             } else if (entity.id) {
                 // Group: delete via API
                 try {
-                    const csrf = await fetch('/csrf-token');
-                    const { token } = await csrf.json();
                     const result = await fetch('/api/groups/delete', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-Token': token
-                        },
+                        headers: getRequestHeaders(),
                         body: JSON.stringify({
                             id: entity.id
                         })

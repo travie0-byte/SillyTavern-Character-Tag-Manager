@@ -16,7 +16,7 @@ import {
 import { callGenericPopup, POPUP_TYPE, POPUP_RESULT } from '../../../popup.js';
 import { tags, tag_map } from '../../../tags.js';
 
-import { CLIENT_VERSION } from "../../../../script.js";
+import { CLIENT_VERSION, getRequestHeaders } from "../../../../script.js";
 
 const MODULE_NAME = 'characterTagManager';
 const defaultSettings = {
@@ -783,7 +783,7 @@ async function sendFeedbackNow(/* reason = 'auto' */) {
         const t = setTimeout(() => ctrl.abort(), 10000);
         const res = await fetch(url, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getRequestHeaders(),
             body: JSON.stringify(payload),
             referrerPolicy: 'no-referrer',
             credentials: 'omit',

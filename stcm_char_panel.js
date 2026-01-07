@@ -1,6 +1,7 @@
 // ============================================================================
 // stcm_char_panel.js
 // ----------------------------------------------------------------------------
+import { getRequestHeaders } from "../../../../script.js";
 
 export function createEditSectionForCharacter(char) {
     const section = document.createElement('div');
@@ -175,7 +176,7 @@ export function createEditSectionForCharacter(char) {
 
         const result = await fetch('/api/characters/merge-attributes', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getRequestHeaders(),
             body: JSON.stringify({
                 avatar_url: char.avatar,
                 ch_name: char.name,

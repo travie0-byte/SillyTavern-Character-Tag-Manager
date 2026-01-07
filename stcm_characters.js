@@ -14,7 +14,7 @@ import { debouncePersist,
  } from './utils.js';
     
 import { tags, tag_map, removeTagFromEntity } from "../../../tags.js";
-import { characters, selectCharacterById } from "../../../../script.js";
+import { characters, selectCharacterById, getRequestHeaders } from "../../../../script.js";
 import { groups, getGroupAvatar } from "../../../../scripts/group-chats.js";
 import { POPUP_RESULT, POPUP_TYPE, callGenericPopup } from "../../../popup.js";
 import { callSaveandReload } from "./index.js";
@@ -495,15 +495,9 @@ async function renderCharacterList() {
             );
             if (confirmed !== POPUP_RESULT.AFFIRMATIVE) return;
 
-            const csrf = await fetch('/csrf-token');
-            const { token } = await csrf.json();
-
             const result = await fetch('/api/characters/delete', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-Token': token
-                },
+                headers: getRequestHeaders(),
                 body: JSON.stringify({
                     avatar_url: entity.avatar,
                     delete_chats: true
