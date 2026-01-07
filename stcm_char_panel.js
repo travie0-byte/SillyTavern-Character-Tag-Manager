@@ -178,9 +178,8 @@ export function createEditSectionForCharacter(char) {
             method: 'POST',
             headers: getRequestHeaders(),
             body: JSON.stringify({
-                avatar_url: char.avatar,
-                ch_name: char.name,
-                updates: payload
+                avatar: char.avatar,
+                ...payload
             })
         });
 
