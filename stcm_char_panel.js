@@ -173,6 +173,14 @@ export function createEditSectionForCharacter(char) {
                 }
             }
         });
+        if(!payload.data.tags?.trim()) {
+            payload.data.tags = [];
+        }else{
+            payload.data.tags = payload.data.tags
+                .split(',')
+                .map(t => t.trim())
+                .filter(t => t.length > 0);
+        }
 
         const result = await fetch('/api/characters/merge-attributes', {
             method: 'POST',
